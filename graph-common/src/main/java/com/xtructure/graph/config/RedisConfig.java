@@ -8,14 +8,20 @@ import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig;
 
 /**
  * Description: // Redis配置类
@@ -27,25 +33,29 @@ import java.util.stream.Collectors;
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
 
+    @Resource
+    private RedisConnectionFactory redisConnectionFactory;
+
     /**
      * Lettuce配置
      *
-     * @param lettuceConnectionFactory 连接工厂
      */
     @Bean
-    public RedisTemplate<String, Serializable> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
+    public RedisTemplate<String, Serializable> redisTemplate() {
         RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;
     }
 
     @Bean
     @Override
     public CacheManager cacheManager() {
-        // TODO
-        return null;
+        RedisCacheConfiguration cacheConfiguration = defaultCacheConfig()
+                .disableCachingNullValues()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+        return RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(cacheConfiguration).build();
     }
 
     @Bean

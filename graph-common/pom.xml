@@ -43,6 +43,11 @@
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
+        <!-- Redis Graph -->
+        <dependency>
+            <groupId>com.redislabs</groupId>
+            <artifactId>jredisgraph</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>

@@ -62,7 +62,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
 
-    @Bean(value = "mykeyGenerator")
+    @Bean(value = "myKeyGenerator")
     @Override
     public KeyGenerator keyGenerator() {
         return (o, method, objects) -> {
@@ -73,12 +73,5 @@ public class RedisConfig extends CachingConfigurerSupport {
             log.debug("|->RedisConfig.keyGenerator.stringBuilder:{}", stringBuilder.toString());
             return stringBuilder.toString();
         };
-    }
-
-    @Bean
-    @Override
-    public CacheErrorHandler errorHandler() {
-        // TODO
-        return null;
     }
 }

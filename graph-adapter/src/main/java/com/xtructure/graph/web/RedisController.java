@@ -26,7 +26,7 @@ public class RedisController {
     @Resource
     private RedisUtil redisUtil;
 
-    @Cacheable()
+    @Cacheable(cacheNames = "cache", keyGenerator = "myKeyGenerator", condition = "#key!=null and #value!=null")
     @GetMapping("/add/{key}/{value}")
     public String add(@PathVariable("key") String key, @PathVariable("value") String value) {
         GraphAssert.notBlank(key, "add方法输入参数{key}为空!");

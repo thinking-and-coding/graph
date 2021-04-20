@@ -1,6 +1,7 @@
 package com.xtructure.graph.web;
 
 import com.alibaba.cola.exception.ExceptionFactory;
+import com.wzr.exceptionlog.ExceptionLog;
 import com.xtructure.graph.common.GraphAssert;
 import com.xtructure.graph.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public class RedisController {
     @Resource
     private RedisUtil redisUtil;
 
+    @Resource
+    private RedisGraphController redisGraphController;
+
     @Cacheable(cacheNames = "cache", keyGenerator = "myKeyGenerator", condition = "#key!=null and #value!=null")
     @GetMapping("/add/{key}/{value}")
     public String add(@PathVariable("key") String key, @PathVariable("value") String value) {
@@ -49,4 +53,19 @@ public class RedisController {
         log.info("|->RedisController.exc");
         throw ExceptionFactory.bizException("测试日志方法!");
     }
+
+    @GetMapping("/log")
+    public String log() {
+        log.info("|->RedisController.log");
+        redisGraphController.testAnnotation();
+        return "OK";
+    }
+
+    @GetMapping("/log2")
+    public String log2() {
+        log.info("|->RedisController.log2");
+        redisGraphController.testAnnotation2("运行时异常!");
+        return "OK";
+    }
+
 }

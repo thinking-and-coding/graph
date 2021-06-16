@@ -8,9 +8,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>start</artifactId>
+    <artifactId>graph-start</artifactId>
     <packaging>jar</packaging>
-    <name>start</name>
+    <name>graph-start</name>
 
     <dependencies>
         <dependency>

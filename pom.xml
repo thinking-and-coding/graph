@@ -20,12 +20,12 @@
     </properties>
 
     <modules>
-        <module>graph-client</module>
-        <module>graph-adapter</module>
-        <module>graph-app</module>
-        <module>graph-domain</module>
-        <module>graph-infrastructure</module>
-        <module>graph-start</module>
+        <module>client</module>
+        <module>adapter</module>
+        <module>app</module>
+        <module>domain</module>
+        <module>infrastructure</module>
+        <module>start</module>
     </modules>
 
     <dependencyManagement>

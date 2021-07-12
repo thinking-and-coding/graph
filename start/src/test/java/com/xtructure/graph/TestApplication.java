@@ -1,7 +1,6 @@
 package com.xtructure.graph;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
 
 public class TestApplication {
 

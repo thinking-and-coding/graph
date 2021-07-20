@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    environment:
+      - PORT=8080
+      - MYSQL_URL=jdbc:mysql://db/graph
+    restart:
+      always
+
+  db:
+    container_name: db
+    image: mysql/mysql-server:latest
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=graph
+      - MYSQL_PASSWORD=123456
+      - MYSQL_DATABASE=graph
+    volumes:
+      - ~/docker/mysql/:/var/lib/mysql
+    networks:
+      - backend
+    command:
+      --default-authentication-plugin=mysql_native_password
+    restart:
+      always
+
+  redis:
+    container_name: redis
+    image: redislabs/redisgraph:latest
+    ports:
+      - 6379:6379
+    volumes:
+    - ~/docker/redis:/usr/local/etc/redis
+    networks:
+      - backend
+    restart:
+      always
+
+networks:
+  backend:
+    driver: bridge
